@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useInventory } from '../context/InventoryContext.jsx';
+import { parseStock } from '../utils/parseStock.js';
 
-const emptyForm = { name: '', brand: '', type: '' };
+const emptyForm = { name: '', brand: '', type: '', stock: '' };
 const fields = [
   { name: 'name', label: 'Nombre del producto', placeholder: 'Ej.: Leche entera' },
   { name: 'brand', label: 'Marca', placeholder: 'Ej.: Campo Verde' },
   { name: 'type', label: 'Tipo de producto', placeholder: 'Ej.: Lácteos' },
+  { name: 'stock', label: 'Stock total registrado', placeholder: 'Ej.: 10' },
 ];
 
 export default function ProductForm() {
@@ -27,12 +29,17 @@ export default function ProductForm() {
       name: values.name.trim(),
       brand: values.brand.trim(),
       type: values.type.trim(),
+      stock: parseStock(values.stock),
     };
     const nextErrors = {};
     for (const field of fields) {
+      if (field.name === 'stock') continue;
       if (!product[field.name]) {
         nextErrors[field.name] = `${field.label}: ingresa un valor que no contenga solo espacios.`;
       }
+    }
+    if (product.stock === null) {
+      nextErrors.stock = 'Stock: ingresa un número entero seguro mayor o igual a cero.';
     }
     setErrors(nextErrors);
     setConfirmation('');
@@ -53,7 +60,10 @@ export default function ProductForm() {
             className="min-h-12 w-full rounded-[0.4rem] border border-[#718477] bg-white p-[0.65rem] aria-invalid:border-[#a52b24] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#b45e00]"
             id={`product-${field.name}`}
             name={field.name}
-            type="text"
+            type={field.name === 'stock' ? 'number' : 'text'}
+            min={field.name === 'stock' ? 0 : undefined}
+            max={field.name === 'stock' ? Number.MAX_SAFE_INTEGER : undefined}
+            step={field.name === 'stock' ? 1 : undefined}
             value={values[field.name]}
             onChange={handleChange}
             placeholder={field.placeholder}

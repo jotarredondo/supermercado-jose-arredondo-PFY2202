@@ -7,7 +7,7 @@ export function InventoryProvider({ children }) {
   const [state, dispatch] = useReducer(inventoryReducer, initialInventoryState);
 
   return (
-    <InventoryContext.Provider value={{ products: state.products, dispatch }}>
+    <InventoryContext.Provider value={{ products: state.products, cart: state.cart, dispatch }}>
       {children}
     </InventoryContext.Provider>
   );

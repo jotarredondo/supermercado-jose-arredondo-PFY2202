@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router';
+import { useInventory } from '../context/InventoryContext.jsx';
 
 export default function InventoryNavigation() {
+  const { cart } = useInventory();
+  const totalUnits = cart.reduce((total, item) => total + item.quantity, 0);
   const baseClasses = 'flex h-full min-h-12 items-center justify-center rounded-lg p-2 text-center text-[0.85rem] font-[650] no-underline hover:bg-[#f0f5ed] min-[481px]:text-base';
   const linkClass = ({ isActive }) =>
     isActive ? `${baseClasses} bg-[#e5eee1] text-[#10482d] shadow-[inset_0_-3px_#17633f]` : baseClasses;
@@ -12,6 +15,7 @@ export default function InventoryNavigation() {
         <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
           <li><NavLink to="/productos/nuevo" className={linkClass}>Agregar producto</NavLink></li>
           <li><NavLink to="/inventario" className={linkClass}>Ver inventario</NavLink></li>
+          <li><NavLink to="/carrito" className={linkClass}>Carrito ({totalUnits})</NavLink></li>
         </ul>
       </div>
     </nav>
