@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router';
+import { HashRouter } from 'react-router';
 import App from './App.jsx';
 import { InventoryProvider } from './context/InventoryContext.jsx';
 import './styles/index.css';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <InventoryProvider>
-        <App />
-      </InventoryProvider>
-    </BrowserRouter>
-  </StrictMode>,
+    <StrictMode>
+        <HashRouter>
+            <InventoryProvider>
+                <App />
+            </InventoryProvider>
+        </HashRouter>
+    </StrictMode>,
 );
